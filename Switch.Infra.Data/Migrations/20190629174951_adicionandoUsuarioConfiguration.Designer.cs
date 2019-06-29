@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Switch.Infra.Data.Context;
 
 namespace Switch.Infra.Data.Migrations
 {
     [DbContext(typeof(SwitchContext))]
-    partial class SwitchContextModelSnapshot : ModelSnapshot
+    [Migration("20190629174951_adicionandoUsuarioConfiguration")]
+    partial class adicionandoUsuarioConfiguration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,9 +26,7 @@ namespace Switch.Infra.Data.Migrations
 
                     b.Property<DateTime>("DataNascimento");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(400);
+                    b.Property<string>("Email");
 
                     b.Property<string>("Nome")
                         .IsRequired()
