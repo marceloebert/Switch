@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Switch.Domain.Entities;
 
 namespace Switch.Infra.Data.Context
 {
