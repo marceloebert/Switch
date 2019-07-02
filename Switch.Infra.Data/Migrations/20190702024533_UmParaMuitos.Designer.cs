@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Switch.Infra.Data.Context;
 
 namespace Switch.Infra.Data.Migrations
 {
     [DbContext(typeof(SwitchContext))]
-    partial class SwitchContextModelSnapshot : ModelSnapshot
+    [Migration("20190702024533_UmParaMuitos")]
+    partial class UmParaMuitos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,8 +43,7 @@ namespace Switch.Infra.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("DataPublicacao")
-                        .HasMaxLength(400);
+                    b.Property<DateTime>("DataPublicacao");
 
                     b.Property<string>("Texto");
 

@@ -2,55 +2,33 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Switch.Infra.Data.Context;
 
 namespace Switch.Infra.Data.Migrations
 {
     [DbContext(typeof(SwitchContext))]
-    partial class SwitchContextModelSnapshot : ModelSnapshot
+    [Migration("20190630040331_AdicionandoStatusRelacionamentoCerto")]
+    partial class AdicionandoStatusRelacionamentoCerto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("Switch.Domain.Entities.Identificacao", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Numero");
-
-                    b.Property<int>("TipoDocumento");
-
-                    b.Property<int>("UsuarioId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UsuarioId")
-                        .IsUnique();
-
-                    b.ToTable("Identificacao");
-                });
-
             modelBuilder.Entity("Switch.Domain.Entities.Postagem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("DataPublicacao")
-                        .HasMaxLength(400);
+                    b.Property<DateTime>("DataPublicacao");
 
                     b.Property<string>("Texto");
 
-                    b.Property<int>("UsuarioId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Postagens");
                 });
@@ -99,22 +77,6 @@ namespace Switch.Infra.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Usuarios");
-                });
-
-            modelBuilder.Entity("Switch.Domain.Entities.Identificacao", b =>
-                {
-                    b.HasOne("Switch.Domain.Entities.Usuario", "Usuario")
-                        .WithOne("Identificacao")
-                        .HasForeignKey("Switch.Domain.Entities.Identificacao", "UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Switch.Domain.Entities.Postagem", b =>
-                {
-                    b.HasOne("Switch.Domain.Entities.Usuario", "Usuario")
-                        .WithMany("Postagens")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

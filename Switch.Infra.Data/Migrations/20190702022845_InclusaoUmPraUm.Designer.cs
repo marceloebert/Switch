@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Switch.Infra.Data.Context;
 
 namespace Switch.Infra.Data.Migrations
 {
     [DbContext(typeof(SwitchContext))]
-    partial class SwitchContextModelSnapshot : ModelSnapshot
+    [Migration("20190702022845_InclusaoUmPraUm")]
+    partial class InclusaoUmPraUm
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,16 +43,11 @@ namespace Switch.Infra.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("DataPublicacao")
-                        .HasMaxLength(400);
+                    b.Property<DateTime>("DataPublicacao");
 
                     b.Property<string>("Texto");
 
-                    b.Property<int>("UsuarioId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Postagens");
                 });
@@ -106,14 +103,6 @@ namespace Switch.Infra.Data.Migrations
                     b.HasOne("Switch.Domain.Entities.Usuario", "Usuario")
                         .WithOne("Identificacao")
                         .HasForeignKey("Switch.Domain.Entities.Identificacao", "UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Switch.Domain.Entities.Postagem", b =>
-                {
-                    b.HasOne("Switch.Domain.Entities.Usuario", "Usuario")
-                        .WithMany("Postagens")
-                        .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

@@ -36,7 +36,12 @@ namespace Switch.Infra.Data.Config
             builder.Property(u => u.DataNascimento)                            
                             .IsRequired();
 
+            builder.HasOne(u => u.Identificacao)
+                   .WithOne(i => i.Usuario)
+                   .HasForeignKey<Identificacao>(i => i.UsuarioId);
 
+            //builder.HasMany(u => u.Postagens)
+            //    .WithOne(p => p.Usuario);                
         }
     }
 }
