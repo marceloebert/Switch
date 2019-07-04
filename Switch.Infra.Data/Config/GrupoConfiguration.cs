@@ -19,11 +19,10 @@ namespace Switch.Infra.Data.Config
                    .IsRequired();
 
             builder.Property(g => g.UrlFoto)
-                   .HasMaxLength(200)
+                   .HasMaxLength(1000)
                    .IsRequired();
 
-            //builder.HasMany(g => g.Postagens)
-            //       .WithOne
+            builder.HasMany(g => g.Postagens).WithOne(p => p.Grupo);
 
         }
     }
