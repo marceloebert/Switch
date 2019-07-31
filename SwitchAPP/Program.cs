@@ -35,13 +35,14 @@ namespace SwitchAPP
             Usuario usuario4;
             Usuario usuario5;
             Usuario usuario6;
+            Usuario usuario7;
 
 
             Usuario CriarUsuario(string nome)
             {
                 return new Usuario()
                 {
-                    Nome = "Usuario1",
+                    Nome = nome,
                     Sobrenome = "SobreUsuario",
                     Email = "marcelo.ebert@hotmail.com",
                     DataNascimento = DateTime.Now,
@@ -57,6 +58,7 @@ namespace SwitchAPP
             usuario4 = CriarUsuario("usuario4");
             usuario5 = CriarUsuario("usuario5");
             usuario6 = CriarUsuario("usuario6");
+            usuario7 = CriarUsuario("Maria");
 
 
 
@@ -76,6 +78,7 @@ namespace SwitchAPP
 
                     //Inclusão 
                     //ID gerado pelo EF em tempo de execução é temporário até a execução do SaveChanges
+                    //dbcontext.Usuarios.Add(usuario7);
                     //dbcontext.Usuarios.AddRange(usuario1,usuario2,usuario3,usuario4,usuario5,usuario6);
                     //dbcontext.SaveChanges();
 
@@ -116,7 +119,18 @@ namespace SwitchAPP
                     //dbcontext.SaveChanges(); // Gera Update mais performatico somente da coluna alterada
                     //dbcontext.Update<Usuario>(usuario); // gera update mais lentos da tabela toda
 
+                    //Evento para retornar estado da conexão
+                    //dbcontext.Database.GetDbConnection().StateChange += Program_StateChange;
 
+                    //Atualização com relacionamento
+                    var userMaria = dbcontext.Usuarios.FirstOrDefault(u => u.Nome == "Maria");
+                    var instituicaoEnsino = dbcontext.InstituicoesEnsino.FirstOrDefault(u => u.Nome.Contains("Faculdade Direito"));
+                    instituicaoEnsino.Nome = "Fac. Direito";
+
+                    //userMaria.InstituicoesEnsino.Add(new InstituicaoEnsino { Nome = "Faculdade Direito" });
+                    //userMaria.InstituicoesEnsino.Add(new InstituicaoEnsino { Nome = "Faculdade Medicina" });
+
+                    dbcontext.SaveChanges();
 
                 }
             }
@@ -127,6 +141,11 @@ namespace SwitchAPP
             }         
 
             
+        }
+
+        private static void Program_StateChange(object sender, System.Data.StateChangeEventArgs e)
+        {
+            Console.WriteLine("Estado Atual de conexão: " + e.CurrentState);
         }
     }
 }
