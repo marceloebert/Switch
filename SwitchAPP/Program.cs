@@ -7,6 +7,9 @@ using System;
 using Switch.Infra.CrossCutting.Logging;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Collections.Generic;
+using SwitchAPP.Reports;
+using MySql.Data.MySqlClient;
 
 namespace SwitchAPP
 {
@@ -123,14 +126,146 @@ namespace SwitchAPP
                     //dbcontext.Database.GetDbConnection().StateChange += Program_StateChange;
 
                     //Atualização com relacionamento
-                    var userMaria = dbcontext.Usuarios.FirstOrDefault(u => u.Nome == "Maria");
-                    var instituicaoEnsino = dbcontext.InstituicoesEnsino.FirstOrDefault(u => u.Nome.Contains("Faculdade Direito"));
-                    instituicaoEnsino.Nome = "Fac. Direito";
+                    //var userMaria = dbcontext.Usuarios.FirstOrDefault(u => u.Nome == "Maria");
+                    //var instituicaoEnsino = dbcontext.InstituicoesEnsino.FirstOrDefault(u => u.Nome.Contains("Faculdade Direito"));
+                    //instituicaoEnsino.Nome = "Fac. Direito";
 
                     //userMaria.InstituicoesEnsino.Add(new InstituicaoEnsino { Nome = "Faculdade Direito" });
                     //userMaria.InstituicoesEnsino.Add(new InstituicaoEnsino { Nome = "Faculdade Medicina" });
 
-                    dbcontext.SaveChanges();
+
+                    //Exclusão com relacionamento
+                    //var userMaria = dbcontext.Usuarios.FirstOrDefault(u => u.Nome == "Maria");
+                    //var instituicaoEnsino = userMaria.InstituicoesEnsino.FirstOrDefault(i => i.Nome.Contains("Fac. Direito"));
+                    //userMaria.InstituicoesEnsino.Remove(instituicaoEnsino);
+
+                    //dbcontext.SaveChanges();
+
+
+                    //Consulta SQL
+                    //var sqlCommand = "select nome, sobrenome from usuarios";
+                    //var usuarios = dbcontext.Usuarios.FromSql(sqlCommand).ToList();
+
+                    //Consulta com Projeção de SQL
+                    //var sql = "select nome, sobrenome from usuarios";
+                    //var connection = dbcontext.Database.GetDbConnection();
+                    //var listaUsuarios = new List<UsuarioDTO>();
+
+                    //using (var command = connection.CreateCommand())
+                    //{
+                    //    connection.Open();
+                    //    command.CommandText = sql;
+                    //    using (var dataReader = command.ExecuteReader())
+                    //    {
+                    //        if(dataReader.HasRows)
+                    //        {
+                    //            while(dataReader.Read())
+                    //            {
+                    //                var usuarioDTO = new UsuarioDTO();
+                    //                usuarioDTO.Nome = dataReader["nome"].ToString();
+                    //                usuarioDTO.SobreNome = dataReader["SobreNome"].ToString();
+                    //                listaUsuarios.Add(usuarioDTO);
+                    //            }
+                    //        }
+                    //    }
+
+                    //}
+
+
+
+                    //Consulta com parametros
+                    //var sql = "select nome, sobrenome from usuarios where nome = @nomeUsuario";
+                    //var connection = dbcontext.Database.GetDbConnection();
+                    //var listaUsuarios = new List<UsuarioDTO>();
+                    //var filtroPesquisa = "' or 1='";
+
+                    //using (var command = connection.CreateCommand())
+                    //{
+                    //    connection.Open();
+                    //    command.CommandText = sql;
+
+                    //    MySqlParameter param = new MySqlParameter("@nomeUsuario", MySqlDbType.VarChar);
+                    //    param.Value = filtroPesquisa;
+                    //    command.Parameters.Add(param);
+
+                    //    using (var dataReader = command.ExecuteReader())
+                    //    {
+                    //        if (dataReader.HasRows)
+                    //        {
+                    //            while (dataReader.Read())
+                    //            {
+                    //                var usuarioDTO = new UsuarioDTO();
+                    //                usuarioDTO.Nome = dataReader["nome"].ToString();
+                    //                usuarioDTO.SobreNome = dataReader["SobreNome"].ToString();
+                    //                listaUsuarios.Add(usuarioDTO);
+                    //            }
+                    //        }
+                    //    }
+
+                    //}
+
+
+                    ////Consulta com procedures
+                    //var sql = "call spObterTodosUsuarios()";
+                    //var connection = dbcontext.Database.GetDbConnection();
+                    //var listaUsuarios = new List<UsuarioDTO>();
+                    //var filtroPesquisa = "' or 1='";
+
+                    //using (var command = connection.CreateCommand())
+                    //{
+                    //    connection.Open();
+                    //    command.CommandText = sql;
+
+                    //    MySqlParameter param = new MySqlParameter("@nomeUsuario", MySqlDbType.VarChar);
+                    //    param.Value = filtroPesquisa;                        
+                    //    using (var dataReader = command.ExecuteReader())
+                    //    {
+                    //        if (dataReader.HasRows)
+                    //        {
+                    //            while (dataReader.Read())
+                    //            {
+                    //                var usuarioDTO = new UsuarioDTO();
+                    //                usuarioDTO.Nome = dataReader["nome"].ToString();
+                    //                usuarioDTO.SobreNome = dataReader["SobreNome"].ToString();
+                    //                listaUsuarios.Add(usuarioDTO);
+                    //            }
+                    //        }
+                    //    }
+
+                    //}
+
+
+
+                    //Consulta procedures com parametros                
+                    var connection = dbcontext.Database.GetDbConnection();
+                    var listaUsuarios = new List<UsuarioDTO>();                    
+
+                    using (var command = connection.CreateCommand())
+                    {
+
+                        var sql = "call spObterUsuario(@usuarioId)";
+                        MySqlParameter param = new MySqlParameter("@usuarioId", MySqlDbType.Int32);
+                        param.Value = 10;
+
+                        connection.Open();
+                        command.CommandText = sql;
+                        command.Parameters.Add(param);
+                        
+                        using (var dataReader = command.ExecuteReader())
+                        {
+                            if (dataReader.HasRows)
+                            {
+                                while (dataReader.Read())
+                                {
+                                    var usuarioDTO = new UsuarioDTO();
+                                    usuarioDTO.Nome = dataReader["nome"].ToString();
+                                    usuarioDTO.SobreNome = dataReader["SobreNome"].ToString();
+                                    listaUsuarios.Add(usuarioDTO);
+                                }
+                            }
+                        }
+
+                    }
 
                 }
             }
